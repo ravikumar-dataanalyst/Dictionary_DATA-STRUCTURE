@@ -1,0 +1,58 @@
+Class MinQueue<T extends Comparable<T>>:
+    Node head, tail
+    Node minNode
+
+    Function add(x: T):
+        newNode = new Node(x)
+        if tail is not null:
+            tail.next = newNode
+            newNode.prev = tail
+        tail = newNode
+        if head is null:
+            head = tail
+        if minNode is null or x < minNode.value:
+            minNode = newNode
+
+    Function remove():
+        if head is null:
+            throw new NoSuchElementException()
+        removedNode = head
+        head = head.next
+        if head is null:
+            tail = null
+        else:
+            head.prev = null
+        if removedNode == minNode:
+            updateMinNode()
+        return removedNode.value
+
+    Function size():
+        count = 0
+        node = head
+        while node is not null:
+            count++
+            node = node.next
+        return count
+
+    Function min():
+        if minNode is null:
+            throw new NoSuchElementException()
+        return minNode.value
+
+    Function updateMinNode():
+        if head is null:
+            minNode = null
+        else:
+            node = head
+            minNode = head
+            while node is not null:
+                if node.value < minNode.value:
+                    minNode = node
+                node = node.next
+
+    Class Node:
+        T value
+        Node prev, next
+
+        Constructor Node(x: T):
+            value = x
